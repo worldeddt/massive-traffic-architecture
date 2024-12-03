@@ -15,6 +15,8 @@ services:
     networks:
       cassandra_net:
         ipv4_address: 192.168.1.100
+    volumes:
+      - ./cassandra_data/node1:/etc
   cassandra-node-1:
     image: cassandra
     environment:
@@ -29,20 +31,22 @@ services:
     networks:
       cassandra_net:
         ipv4_address: 192.168.1.101
-  cassandra-node-2:
-    image: cassandra
-    environment:
-      - CASSANDRA_SEEDS=cassandra-node-0
-      - CASSANDRA_CLUSTER_NAME=cassandraCluster
-      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
-      - CASSANDRA_DC=datacenter11
-    ports:
-      - "27000:7000"
-      - "27001:7001"
-      - "29042:9042"
-    networks:
-      cassandra_net:
-        ipv4_address: 192.168.1.102
+    volumes:
+      - ./cassandra_data/node2:/etc
+#  cassandra-node-2:
+#    image: cassandra
+#    environment:
+#      - CASSANDRA_SEEDS=cassandra-node-0
+#      - CASSANDRA_CLUSTER_NAME=cassandraCluster
+#      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+#      - CASSANDRA_DC=datacenter11
+#    ports:
+#      - "27000:7000"
+#      - "27001:7001"
+#      - "29042:9042"
+#    networks:
+#      cassandra_net:
+#        ipv4_address: 192.168.1.102
 
 networks:
   cassandra_net:
