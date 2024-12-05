@@ -3,9 +3,10 @@ package massive.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.cassandra.core.mapping.Table;
 
+@Getter
 @Table
 @Entity
 @AllArgsConstructor
