@@ -1,0 +1,72 @@
+version: "1.0"
+
+services:
+  mariadb:
+    image: "mariadb:latest"
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: eddy
+    depends_on:
+      - redis
+  redis:
+    image: "redis:latest"
+    container_name: myredis
+    ports:
+      - "6379:6379"
+    depends_on:
+      - cassandra-node-0
+  cassandra-node-0:
+    image: cassandra:latest
+    environment:
+      - CASSANDRA_SEEDS=cassandra-node-0
+      - CASSANDRA_CLUSTER_NAME=cassandraCluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter11
+    ports:
+      - "17000:7000"  # 노드간 클러스터 내부 통신
+      - "17001:7001"  # 노드간 보안 통신에 사용
+      - "19042:9042"  # CQL 클라이언트 통신
+    user: cassandra
+    volumes:
+      - ./cassandra_data/node1:/etc
+#  cassandra-node-1:
+#    image: cassandra
+#    build:
+#      dockerfile: ./cassandra_data/Dockerfile
+#    environment:
+#      - CASSANDRA_SEEDS=cassandra-node-0
+#      - CASSANDRA_CLUSTER_NAME=cassandraCluster
+#      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+#      - CASSANDRA_DC=datacenter11
+#    ports:
+#      - "27000:7000"
+#      - "27001:7001"
+#      - "29042:9042"
+##    networks:
+##      cassandra_net:
+##        ipv4_address: 192.168.1.101
+#    volumes:
+#      - ./cassandra_data/node2:/etc
+#  cassandra-node-2:
+#    image: cassandra
+#    environment:
+#      - CASSANDRA_SEEDS=cassandra-node-0
+#      - CASSANDRA_CLUSTER_NAME=cassandraCluster
+#      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+#      - CASSANDRA_DC=datacenter11
+#    ports:
+#      - "27000:7000"
+#      - "27001:7001"
+#      - "29042:9042"
+#    networks:
+#      cassandra_net:
+#        ipv4_address: 192.168.1.102
+
+#networks:
+#  cassandra_net:
+#    driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 192.168.1.0/24
