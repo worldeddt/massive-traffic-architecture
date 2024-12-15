@@ -4,6 +4,7 @@ services:
 # Infra services
   cassandra-node-0:
     image: cassandra
+    container_name: cassandra-node-0
     environment:
       - CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2
       - CASSANDRA_CLUSTER_NAME=MyCluster
@@ -23,6 +24,7 @@ services:
 
   cassandra-node-1:
     image: cassandra
+    container_name: cassandra-node-1
     environment:
       - CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2
       - CASSANDRA_CLUSTER_NAME=MyCluster
@@ -42,6 +44,7 @@ services:
 
   cassandra-node-2:
     image: cassandra
+    container_name: cassandra-node-2
     environment:
       - CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2
       - CASSANDRA_CLUSTER_NAME=MyCluster
@@ -59,68 +62,69 @@ services:
       timeout: 10s
       retries: 50
 
-  myredis:
-    image: redis
-    hostname: myredis
-    ports:
-      - "6379:6379"
-    depends_on:
-      cassandra-node-0:
-        condition: service_healthy
-      cassandra-node-1:
-        condition: service_healthy
-      cassandra-node-2:
-        condition: service_healthy
-
-  mysql-server:
-    image: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=1234
+  db:
+    image: "mariadb:latest"
+    container_name: db
     ports:
       - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: eddy
+    volumes:
+      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     depends_on:
-      - myredis
+      - redis
 
+  redis:
+    image: "redis:latest"
+    container_name: redis
+    ports:
+      - "6379:6379"
 
 # Domain Services
-  member-service:
-    image: member-service
+  massive-member:
+    image: massive-member
+    container_name: massive-member
     ports:
-      - "8081:8080"
+      - "8081:8081"
     depends_on:
-      - mysql-server
+      - db
 
-  payment-service:
-    image: payment-service
+  massive-order:
+    image: massive-order
+    container_name: massive-order
     ports:
-      - "8082:8080"
+      - "8082:8082"
     depends_on:
-      - mysql-server
+      - db
 
-  delivery-service:
-    image: delivery-service
+  massive-delivery:
+    image: massive-delivery
+    container_name: massive-delivery
     ports:
-      - "8083:8080"
+      - "8083:8083"
     depends_on:
-      - mysql-server
+      - db
 
-  search-service:
-    image: search-service
+  massive-catalog:
+    image: massive-catalog
+    container_name: massive-catalog
     ports:
-      - "8084:8080"
+      - "8084:8084"
     depends_on:
-      - mysql-server
+      - db
 
-  catalog-service:
-    image: catalog-service
+  massive-search:
+    image: massive-search
+    container_name: massive-search
     ports:
-      - "8085:8080"
+      - "8085:8085"
     depends_on:
-      - mysql-server
+      - db
 
-  order-service:
-    image: order-service
+  massive-payment:
+    image: massive-payment
+    container_name: massive-payment
     ports:
-      - "8086:8080"
+      - "8086:8086"
     depends_on:
-      - mysql-server
+      - db
