@@ -21,6 +21,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 50
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.2
 
   cassandra-node-1:
     image: cassandra
@@ -41,6 +44,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 50
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.3
 
   cassandra-node-2:
     image: cassandra
@@ -61,6 +67,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 50
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.4
 
   db:
     image: "mariadb:latest"
@@ -73,12 +82,18 @@ services:
       - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     depends_on:
       - redis
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.5
 
   redis:
     image: "redis:latest"
     container_name: redis
     ports:
       - "6379:6379"
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.6
 
 # Domain Services
   massive-member:
@@ -88,6 +103,9 @@ services:
       - "8081:8081"
     depends_on:
       - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.7
 
   massive-order:
     image: massive-order
@@ -96,6 +114,9 @@ services:
       - "8082:8082"
     depends_on:
       - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.8
 
   massive-delivery:
     image: massive-delivery
@@ -104,6 +125,9 @@ services:
       - "8083:8083"
     depends_on:
       - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.9
 
   massive-catalog:
     image: massive-catalog
@@ -112,6 +136,9 @@ services:
       - "8084:8084"
     depends_on:
       - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.10
 
   massive-search:
     image: massive-search
@@ -120,6 +147,9 @@ services:
       - "8085:8085"
     depends_on:
       - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.11
 
   massive-payment:
     image: massive-payment
@@ -128,3 +158,13 @@ services:
       - "8086:8086"
     depends_on:
       - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.12
+
+networks:
+  black-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
