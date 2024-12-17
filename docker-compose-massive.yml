@@ -94,40 +94,40 @@ services:
     networks:
       black-net:
         ipv4_address: 172.18.0.6
-#
-## Domain Services
-#  massive-member:
-#    image: massive-member
-#    container_name: massive-member
-#    ports:
-#      - "8081:8081"
-#    depends_on:
-#      - db
-#    networks:
-#      black-net:
-#        ipv4_address: 172.18.0.7
-#
-#  massive-order:
-#    image: massive-order
-#    container_name: massive-order
-#    ports:
-#      - "8082:8082"
-#    depends_on:
-#      - db
-#    networks:
-#      black-net:
-#        ipv4_address: 172.18.0.8
-#
-#  massive-delivery:
-#    image: massive-delivery
-#    container_name: massive-delivery
-#    ports:
-#      - "8083:8083"
-#    depends_on:
-#      - db
-#    networks:
-#      black-net:
-#        ipv4_address: 172.18.0.9
+
+# Domain Services
+  massive-member:
+    image: massive-member
+    container_name: massive-member
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.7
+
+  massive-order:
+    image: massive-order
+    container_name: massive-order
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.8
+
+  massive-delivery:
+    image: massive-delivery
+    container_name: massive-delivery
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.9
 
   massive-catalog:
     image: massive-catalog
@@ -146,27 +146,27 @@ services:
       black-net:
         ipv4_address: 172.18.0.10
 
-#  massive-search:
-#    image: massive-search
-#    container_name: massive-search
-#    ports:
-#      - "8085:8085"
-#    depends_on:
-#      - db
-#    networks:
-#      black-net:
-#        ipv4_address: 172.18.0.11
-#
-#  massive-payment:
-#    image: massive-payment
-#    container_name: massive-payment
-#    ports:
-#      - "8086:8086"
-#    depends_on:
-#      - db
-#    networks:
-#      black-net:
-#        ipv4_address: 172.18.0.12
+  massive-search:
+    image: massive-search
+    container_name: massive-search
+    ports:
+      - "8085:8085"
+    depends_on:
+      - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.11
+
+  massive-payment:
+    image: massive-payment
+    container_name: massive-payment
+    ports:
+      - "8086:8086"
+    depends_on:
+      - db
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.12
 
 networks:
   black-net:
