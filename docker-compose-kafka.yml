@@ -62,6 +62,9 @@ services:
       timeout: 20s
       retries: 5
       start_period: 10s
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.16
   kafka1:
     container_name: kafka1
     image: confluentinc/cp-kafka:latest
@@ -72,10 +75,13 @@ services:
       - "19092:19092"
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ZOOKEEPER_CONNECT: "172.18.0.16:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:9092,EXTERNAL://localhost:19092
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.15
   kafka2:
     container_name: kafka2
     image: confluentinc/cp-kafka:latest
@@ -86,10 +92,13 @@ services:
       - "19093:19093"
     environment:
       KAFKA_BROKER_ID: 2
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ZOOKEEPER_CONNECT: "172.18.0.16:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka2:9092,EXTERNAL://localhost:19093
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.14
   kafka3:
     container_name: kafka3
     image: confluentinc/cp-kafka:latest
@@ -100,10 +109,13 @@ services:
       - "19094:19094"
     environment:
       KAFKA_BROKER_ID: 3
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ZOOKEEPER_CONNECT: "172.18.0.16:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka3:9092,EXTERNAL://localhost:19094
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+    networks:
+      black-net:
+        ipv4_address: 172.18.0.13
 
   massive-catalog:
     image: massive-catalog
